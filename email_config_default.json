@@ -1,0 +1,8 @@
+{   
+    "sender":"toto.titi@toto.com",
+    "list_recipients":["toto.titi@toto.com"],
+    "smtp_url":"smtp.toto.com", 
+    "smtp_port":587,
+    "password":"password"
+}
+    

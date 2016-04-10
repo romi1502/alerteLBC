@@ -1,0 +1,7 @@
+{
+    "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=alfine&pe=11",
+    "title":"Alfine",
+    "list_recipients":["hennequin.romain@gmail.com"],
+    "location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
+    "wait_time":[300,600]
+}
