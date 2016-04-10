@@ -15,11 +15,13 @@ from Crypto.Cipher import AES
 import pycurl
 from bs4 import BeautifulSoup
 
-ref_url = 'http://www.leboncoin.fr/electromenager/offres/ile_de_france/?f=a&th=1&pe=9&q=frigo+OR+refrigerateur+OR+frigidaire'#'http://www.leboncoin.fr/electromenager/offres/ile_de_france/?f=a&th=1&pe=11&q=sechante'
-title = 'Frigo pas trop cher'
 me = 'hennequin.romain@gmail.com'
-list_recipients = [me]#,#'caroline.furois@hotmail.fr'
-location_filter = {'Paris', 'Val-de-Marne','Hauts-de-Seine'}
+config = {
+    "reference_url":'http://www.leboncoin.fr/electromenager/offres/ile_de_france/?f=a&th=1&pe=9&q=frigo+OR+refrigerateur+OR+frigidaire',#'http://www.leboncoin.fr/electromenager/offres/ile_de_france/?f=a&th=1&pe=11&q=sechante'
+    "title":'Frigo pas trop cher',
+    "list_recipients":[me],#,#'caroline.furois@hotmail.fr'
+    "location_filter":['Paris', 'Val-de-Marne','Hauts-de-Seine']
+}
 
 save_file = '/Users/rhennequin/Downloads/list_ads'
 
@@ -27,6 +29,8 @@ BLOCK_SIZE = 32
 PADDING = '{'
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
 DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
+
+
 
 
 if os.path.exists(save_file):
@@ -65,7 +69,7 @@ try:
             buff = StringIO()
 
             c = pycurl.Curl()
-            c.setopt(c.URL, ref_url)
+            c.setopt(c.URL, config["reference_url"])
 
             c.setopt(c.WRITEDATA, buff)
             c.perform()
@@ -88,7 +92,7 @@ try:
                     price = ''
                 placement = el.find('div', attrs={'class':'placement'}).getText().replace('\n','').replace('  ','')
                 kept = False
-                for location in location_filter:
+                for location in config["location_filter"]:
                     if location in placement:
                         kept = True
                         break
@@ -119,17 +123,17 @@ try:
                 # msg = MIMEText(body)
                 msg = MIMEMultipart('alternative')
 
-                msg['Subject'] = 'Nouvelle annonce %s' % title
+                msg['Subject'] = 'Nouvelle annonce %s' % config["title"]
                 msg['From'] = me
-                msg['To'] = ', '.join(list_recipients)
+                msg['To'] = ', '.join(config["list_recipients"])
 
-                text = ref_url
+                text = config["reference_url"]
                 html = "<p>Nouvelles annonces:\n</p>"
 
                 for el in new_ads:
                     html+="<p><a href=%s>%s: %s (%s)</a></p>\n" % (el[3],el[0],el[1],el[2])
 
-                html+= "<br><p>Page monitoree: <a href=%s>%s</a></p>\n" %(ref_url,ref_url)
+                html+= "<br><p>Page monitoree: <a href=%s>%s</a></p>\n" %(config["reference_url"],config["reference_url"])
 
                 # html = html.replace('\xa0\u20ac','euros')
                 # html = html.replace('\xe9','e')
@@ -148,7 +152,7 @@ try:
                 server.starttls()
                 server.ehlo()
                 server.login(me, DecodeAES(cipher, pwd))
-                server.sendmail(me,list_recipients,msg.as_string())
+                server.sendmail(me,config["list_recipients"],msg.as_string())
                 server.quit()
                 server.close()
 
