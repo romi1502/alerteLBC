@@ -20,7 +20,6 @@ from bs4 import BeautifulSoup
 
 ads_config_file = "config.json"
 email_config_file = "email_config.json"
-db_file = os.path.join('list_ads.db')
 
 # BLOCK_SIZE = 32
 # PADDING = '{'
@@ -184,11 +183,9 @@ class Ad(object):
     def __eq__(self, ad):
         return hash(ad) == hash(self)
 
-
 if __name__=="__main__":
 
-    known_ads = load_ads_db(db_file)
-    config = load_config(ads_config_file)
+    ads_config = load_config(ads_config_file)
     email_config = load_config(email_config_file)
 
     # pwd_filename = os.path.join(os.path.expanduser("~"),'.lbcpassword')
@@ -209,9 +206,16 @@ if __name__=="__main__":
     #         pwd = f.read()
     #         print pwd
 
+    known_ads = []
+    for ad_config in ads_config:
+        db_file = ad_config["title"].replace(" ","_")+".db"
+        known_ads.append(load_ads_db(db_file))
+
+
     try:
 
-        # check_mail_server(**email_config)
+        # check that credential are working to connect to smtp server.
+        check_mail_server(**email_config)
 
         while True:
 
@@ -223,20 +227,25 @@ if __name__=="__main__":
                 time.sleep(1800)
             else:
 
-                ad_list = retrieve_ad_list(config["reference_url"], config["location_filter"])
 
-                new_ads = []
+                for k,ad_config in enumerate(ads_config):
 
-                for ad in ad_list:
-                    if ad not in known_ads:
-                        known_ads.add(ad)
-                        new_ads.append(ad)
 
-                if new_ads:
-                    update_ads_db(new_ads, db_file=db_file)
-                    send_mail(new_ads, config, **email_config)
+                    ad_list = retrieve_ad_list(ad_config["reference_url"], ad_config["location_filter"])
+
+                    new_ads = []
+
+                    for ad in ad_list:
+                        if ad not in known_ads[k]:
+                            known_ads[k].add(ad)
+                            new_ads.append(ad)
+
+                    if new_ads:
+                        db_file = ad_config["title"].replace(" ","_")+".db"
+                        update_ads_db(new_ads, db_file=db_file)
+                        send_mail(new_ads, ad_config, **email_config)
                     
-                wait_time = random.randint(config["wait_time"][0],config["wait_time"][1])
+                wait_time = random.randint(300, 600)
                 print "Wait %ds" % wait_time
                 time.sleep(wait_time)
 

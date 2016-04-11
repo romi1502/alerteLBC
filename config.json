@@ -1,7 +1,13 @@
-{
-    "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=alfine&pe=11",
-    "title":"Alfine",
-    "list_recipients":["hennequin.romain@gmail.com"],
-    "location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
-    "wait_time":[300,600]
-}
+[   
+    {
+        "title":"Alfine",
+        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=alfine&pe=11",
+        "location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
+    },
+    {
+        "title":"Aile kite surf",
+        "reference_url":"https://www.leboncoin.fr/sports_hobbies/offres/ile_de_france/?th=1&q=aile%20AND%20kitesurf%20AND%206m%20OR%20aile%20AND%20kitesurf%20AND%207m%20%20OR%20aile%20AND%20kitesurf%20AND%208m%20&pe=12",
+        "location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
+    },
+    
+]
