@@ -147,14 +147,15 @@ def retrieve_ad_list(url, location_filter):
             price = ''
             placement = ''
 
-        kept = False
-        for location in location_filter:
-            if location in placement:
-                kept = True
-                break
+        if location_filter:
+            kept = False
+            for location in location_filter:
+                if location in placement:
+                    kept = True
+                    break
 
-        if not kept:
-            continue
+            if not kept:
+                continue
 
         #detail = item_info.find('h2', attrs={'class':'item_title'}).getText().replace('\n','').replace('  ','')
         detail = el.attrs["title"]
