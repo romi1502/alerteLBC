@@ -232,7 +232,7 @@ if __name__=="__main__":
                 for k,ad_config in enumerate(ads_config):
 
 
-                    ad_list = retrieve_ad_list(ad_config["reference_url"], ad_config["location_filter"])
+                    ad_list = retrieve_ad_list(ad_config["reference_url"], ad_config.get("location_filter",None))
 
                     new_ads = []
 
