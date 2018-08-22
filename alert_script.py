@@ -123,49 +123,31 @@ def retrieve_ad_list(url, location_filter):
 
     parsed_body = BeautifulSoup(body)
 
-    raw_ad_list = parsed_body.body.find_all('a', attrs={'class':'list_item clearfix trackable'})
+    # raw_ad_list = parsed_body.body.find_all('a', attrs={'class':'list_item clearfix trackable'})
+    
+    script_list = parsed_body.body.find_all('script')
+    data_dict = yaml.load(script_list[3].contents[0][20:])
 
-
+    raw_ad_list = data_dict["adSearch"]["data"].get("ads",[])
     ad_list = []
     for el in raw_ad_list:
 
-        link = el.attrs["href"]
+        link = el["url"]
         print link
-        item_info = el.find("section", attrs={"class":"item_infos"})
-        if item_info:
-            try:
-                price = item_info.find('h3', attrs={'class':'item_price'}).getText().replace('\n','').replace('  ','')
-            except AttributeError as err:
-                print "Issue while loading price: %s"%str(err)
-                price = ''
-            try:
-                placement = item_info.findAll('p', attrs={'class':'item_supp'})[1].getText().replace('\n','').replace('  ','')
-            except Exception as err:
-                print "Issue while loading placement: %s"%str(err)
-                placement = ''
-        else:
-            price = ''
-            placement = ''
+        
+        price = str(el.get("price",[-1])[0])
 
-        if location_filter:
-            kept = False
-            for location in location_filter:
-                if location in placement:
-                    kept = True
-                    break
-
-            if not kept:
-                continue
+        location = el["location"]["city"]
+        if location_filter and (not location in location_filter):
+            continue
 
         #detail = item_info.find('h2', attrs={'class':'item_title'}).getText().replace('\n','').replace('  ','')
-        detail = el.attrs["title"]
-        # link = el.parent.attrs['href']
+        detail = el["subject"]
         detail = detail.encode('ascii','ignore').replace('\t','')
         price = price.encode('ascii','ignore').replace('\t','')
-        placement = placement.encode('ascii','ignore').replace('\t','')
+        placement = location.encode('ascii','ignore').replace('\t','')
 
         ad_list.append(Ad(detail, price, placement, link))
-
 
 
     return ad_list
@@ -195,17 +177,6 @@ if __name__=="__main__":
         pwd = getpass.getpass(prompt="Type password for %s"%email_config["sender"])
         email_config["password"] = pwd
 
-    # if not os.path.exists(pwd_filename):
-    #     pwd = getpass.getpass(prompt="Type password for %s"%email_config["sender"])
-    #     encryption_key = getpass.getpass(prompt="Type Encryption key to cipher password")
-    #     cipher = AES.new(pad(encryption_key))
-    #     with open(os.path.join(os.path.expanduser("~"),'.lbcpassword'),'w') as f:
-    #         f.write(encodeAES(cipher,pwd))
-    # else:
-    #     with open(os.path.join(os.path.expanduser("~"),'.lbcpassword'),'r') as f:
-    #         cipher = AES.new(pad(getpass.getpass(prompt="Encryption key")))
-    #         pwd = f.read()
-    #         print pwd
 
     known_ads = []
     for ad_config in ads_config:

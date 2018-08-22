@@ -1,0 +1,4 @@
+pyyaml
+pycrypto
+pycurl
+bs4

@@ -1,38 +1,17 @@
 [   
     {
         "title":"Alfine",
-        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=alfine&pe=12",
+        "reference_url":"https://www.leboncoin.fr/recherche/?text=alfine&category=55&regions=12&price=20-250",
         "location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
     },
     {
         "title":"Nework 700",
-        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/occasions/?th=1&q=nework%20700&pe=12",
-        "UNUSED:location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
-    },
-    {   
-        "title":"Wurbee",
-        "reference_url":"https://www.leboncoin.fr/annonces/offres/ile_de_france/occasions/?th=1&q=wurbee",
+        "reference_url":"https://www.leboncoin.fr/recherche/?text=nework%20700&category=55&regions=12&price=30-300",
         "UNUSED:location_filter":["Paris", "Val-de-Marne","Hauts-de-Seine"],
     },
     {
-        "title":"Lapierre sit n go",
-        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=lapierre%20sit%20go&pe=12",
-    },
-    {
-        "title":"Giant fast city",
-        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=giant%20fast%20city&pe=12",
-    },
-    {
-        "title":"Giant seek",
-        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=giant%20seek&pe=12",
-    },
-    {
-        "title":"Cannondale Bad Boy",
-        "reference_url":"https://www.leboncoin.fr/velos/offres/ile_de_france/?th=1&q=cannondale%20bad%20boy&pe=12",
-    },
-    {
-        "title":"Minolta MD 35-70 f3.5",
-        "reference_url":"https://www.leboncoin.fr/image_son/offres/ile_de_france/occasions/?th=1&q=minolta%2035%2070%20f3.5&parrot=0&pe=8",
+        "title":"Zeiss 16-70",
+        "reference_url":"https://www.leboncoin.fr/recherche/?text=zeiss%2016%2070&category=16&price=50-600",
     }
 
 ]
